@@ -1,0 +1,105 @@
+
+db.students.find()
+db.students.find({lessons:{$all:['german', 'physics']}})
+db.sudents.find({'lessons.0':'english'}) /* первый эл массива */
+db.sudents.findOne({'lessons.0':'english'}).name /* только name эл массива */
+db.students.find({}, {lessons:{$slice:2}}) /* найдет только 2 значения у эл */
+db.students.find({lessons:{$size:1}})
+
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$push:{lessons:['python', 'java']}} /* добавит массив */
+   )
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$pull:{lessons:['python', 'java']}} /* удалит массив */
+   )
+
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('4557578669')},
+    {$unset:{'lessons.1':1}} /* удалит эл запишет как null*/
+)
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$pull:{lessons:null}} /* удалит null */
+   )
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$pop:{lessons:1}} /* удалит последний эл */
+   )
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$pop:{lessons:-1}} 
+   )
+
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$push:{lessons:'java'}} 
+   )
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$push:{lessons:{$each:['python', 'js', 'css']}}} 
+   )
+
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$push:{lessons:'js'}} 
+   )
+
+
+
+
+db.students.updateOne(
+    {_id:ObjectId('446578586699')},
+    {$addToSet:{lessons:{$each:['java', python', 'js', 'css']}}}  /* добавит если такого эл еще нет */
+   )
+
+
+
+
+db.students.aggregate([
+    {
+        $addFields:{
+            countOfParents:{$cond:{if:{$isArray:'$parents'}, then:{$size:'$parents'}, else:0}}
+        }
+        /* посчитает родителей, создаст строку для них */
+    }
+])
+
+
+
+
+db.students.updateMany(
+    {parents:{$exists:1}, 'parents.professins':null},
+    {$set:{'parents.$[item].professin':'waiter'}}б
+    {'arrayFilters:':[{'item.profession':null}]}
+)
+
+
+
+db.students.find({'parents.profession':'waiter'})
+
+
+
+
+
