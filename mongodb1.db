@@ -1,0 +1,135 @@
+/* mongodb atlas сайт регистрация на сайте чтоб иметь базу данных */
+/* IP adress 0.0.0.0/0 */
+
+use my_db
+
+/* затем создать баззу данных и начинаем пользоваться >>> */
+
+db.users.find()
+db.users.insertOne({car:'BMW', age:15})
+db.users.find(
+    {gender:'male', rating:5} /* покажет эти поля */
+    {_id:0, age:0} /* без этих полей  '0' */
+    {_id:0, name:1, age:1}
+    )
+
+
+
+db.users.find({_id:ObjectId('45644844949494857')})
+db.users.find(
+    {$or:[
+        {rating:2},
+        {rating:3},
+        {age:12}
+    ]}
+)
+/* $ все юзеры */
+
+
+
+db.users.find(
+    {$and:[
+        {rating:3},
+        {age:12}
+    ]}
+)
+
+
+
+
+db.users.find({age:{$in:[25, 12, 13]}}) /* все что входят в этот список */
+db.users.find({age:{$nin:[25, 12, 13]}}) /* все что не входят в этот список */
+
+
+db.users.find({
+    age:{$not:{
+        $in:[12, 25, 13]
+    }}
+})
+
+
+
+db.users.find({name:'Nata'}) /*регистр важен */
+db.users.find({name:/^a/i}) /* начинается на а */
+db.users.find({name:/^a$/i}) /* заканчивается на а */
+db.users.find({name:/^.{2}t/i}) /* пропустить два символа  and t*/
+db.users.find({name:/.*v.*/i}) /* найти где в, не важно сколько спереди и сзади букв */
+db.users.find({name:/^k.*a$/i}) /* на к начинается на а заканчивается */
+
+db.users.find().sort({rating:1, name:1}) /* сортировать от меньшего к большему -1 наоборот /
+
+db.users.find({name://i}) /**/
+db.users.find({name://i}) /**/
+
+
+
+db.users.find({ age:{$lt:15}}) /* меньше чем 15 */
+db.users.find({ age:{$lte:15}}) /* меньше чем 15 */
+db.users.find({ age:{$gt:15}}) /* больше чем 15 */
+db.users.find({ age:{$ne:29}}) /* не равно */
+db.users.find({ age:{$eq:29}}) /* равно */
+
+
+
+db.users.find({
+    $and:[
+        {age:{gte:10}}, /* < > */
+        {age:{lte:20}},
+    ]
+})
+
+
+
+
+db.users.find().limit(2).skip(4) /* лимит 2 , пропусти 2, возьми 2 */
+
+db.users.updateOne(
+    {_id:ObjectId('466755858')},
+    {$set:{name:'Alesa'}} /* апдейт имя */
+)
+
+
+db.users.updateMany({gender:'male'}, {$set:{gender:'animale'}})
+
+
+
+db.users.find({parents:{$exists:1}}) /* все у кого есть такое поле */
+
+
+
+db.users.updateOne({_id:ObjectId('45465755')}, {$set:{parents:null}}) /* null если поля нет или оно заполнено как null */
+
+
+
+db.users.find({studying:'java'})
+db.users.find({studying.1:'java'}) /* второй элемент java в списке */
+
+
+
+
+db.users.deleteOne({_id:ObjectId('657548484')})
+
+
+
+db.users.find({'address.house':{$gt:20}})
+
+
+
+db.users.find({parents:{$size:2}})
+
+db.users.updateMany({parents:{$size:2}}, {$set:{'parents.$[]':'lalala'}}) /* переименовать двое родителей в лалала*/
+
+
+
+db.users.updateOne({_id:ObjectId('4644484943')}, {$push:{studing:'js'}}) /* добавить эл к юзеру */
+db.users.updateOne({_id:ObjectId('4644484943')}, {$pull:{studing:'js'}}) /* удалить эл к юзеру */
+db.users.updateOne({_id:ObjectId('4644484943')}, {$set:{studing:['python', 'js']}}) /* перезаписать эл к юзеру */
+
+
+
+db.users.updateOne({_id:ObjectId('44675859696')})
+db.users.updateOne({_id:ObjectId('44675859696'), {$set:{'parents.0':'Masha'}}})
+
+/* set перезаписывает */
+/* push добавляет */
+
